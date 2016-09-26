@@ -27,7 +27,7 @@ class ViewController: UIViewController, YHCarouselViewDelegate {
         /**
          *  通过代码创建
          */
-        let carouselView = YHCarouselView.init(frame: CGRect(x: 0, y: 100, width: UIScreen.main.bounds.size.width, height: 180), imagesArray: arr as [AnyObject], descriptions: describeArray)
+        let carouselView = YHCarouselView.init(frame: CGRect(x: 0, y: 100, width: UIScreen.main.bounds.size.width, height: 180), imagesArray: arr, descriptions: describeArray)
         
         
         //设置占位图片,须在设置图片数组之前设置,不设置则为默认占位图

@@ -106,8 +106,8 @@ class YHCarouselView: UIView, UIScrollViewDelegate {
      *  轮播的图片数组，可以是本地图片（UIImage，不能是图片名称），也可以是网络路径
      *  支持网络gif图片，本地gif需做处理后传入
      */
-    var _imageArray = [AnyObject]()
-    var imageArray: [AnyObject]? {
+    var _imageArray = [String]()
+    var imageArray: [String]? {
         
         set{
             self._imageArray = newValue!
@@ -117,10 +117,8 @@ class YHCarouselView: UIView, UIScrollViewDelegate {
             }
             
             var i: NSInteger = 0;
-            for imageIdx: AnyObject in self._imageArray {
-                
-                if imageIdx is NSString {
-                    if let image: UIImage = UIImage(named: imageIdx as! String) {
+            for imageIdx in self._imageArray {
+                    if let image: UIImage = UIImage(named: imageIdx ) {
                         
                         if !imageIdx.hasSuffix(".gif") {
                             
@@ -128,7 +126,7 @@ class YHCarouselView: UIView, UIScrollViewDelegate {
                         }
                         else {
                             
-                            self.images.append(gifImageNamed(imageName: imageIdx as! NSString))
+                            self.images.append(gifImageNamed(imageName: imageIdx as NSString))
                         }
                     }
                     else {
@@ -140,7 +138,6 @@ class YHCarouselView: UIView, UIScrollViewDelegate {
                             self.downloadImages(index: i)
                         }
                     }
-                }
                 i += 1
             }
             
@@ -544,10 +541,10 @@ class YHCarouselView: UIView, UIScrollViewDelegate {
     
 //MARK: 创建视图
     // 初始化视图
-    init(frame: CGRect, imagesArray: [AnyObject], descriptions: [String]) {
+    init(frame: CGRect, imagesArray: [String], descriptions: [String]) {
         
         super.init(frame: frame)
-        self.imageArray = imagesArray as [AnyObject]
+        self.imageArray = imagesArray
         self.descriptionArray = descriptions
         
         self._initViews()
@@ -578,7 +575,7 @@ class YHCarouselView: UIView, UIScrollViewDelegate {
 //MARK: 下载图片
     func downloadImages(index: NSInteger) -> Void {
         
-        let urlString: String = self.imageArray![index] as! String
+        let urlString: String = self.imageArray![index]
         let imageName: String = urlString.replacingOccurrences(of: "/", with: "")
         let path: String = (self.cache?.appending("/"+imageName))!
         if self.autoCache {

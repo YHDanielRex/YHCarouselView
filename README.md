@@ -1,5 +1,5 @@
 # YHCarouselView
-	一个采用Swift对无限轮播图的简易封装
+	一个采用Swift对无限轮播图的简易封装（采用两个imageView的方式）
 
 # 集成YHCarouseelView
 ####导入###

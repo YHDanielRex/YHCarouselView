@@ -194,6 +194,9 @@ class YHCarouselView: UIView, UIScrollViewDelegate {
      */
     var autoCache: Bool = true
     
+    // 图片的点击闭包
+    var callbackBlock: imageClickBlock?
+    
     
 //MARK: 私有属性
     // 轮播图的图片数组
@@ -248,9 +251,6 @@ class YHCarouselView: UIView, UIScrollViewDelegate {
         return OperationQueue.init()
     }()
     
-    // 图片的点击闭包
-    private var callback: imageClickBlock?
-    
     // 缓存图片的本地文件路劲
     private var _cache: String?
     private var cache: String? {
@@ -275,20 +275,17 @@ class YHCarouselView: UIView, UIScrollViewDelegate {
 
     
 //MARK: 图片点击事件
-    // 采用block的方式点击实现
-    func setClickBlock(block: @escaping imageClickBlock){
-        
-        self.callback = block
-    }
-    
     func imageClick(sender: UITapGestureRecognizer) {
         
-        if callback != nil {
+        if let block = self.callbackBlock {
             
-            callback!(self.currIndex)
+            block(self.currIndex)
         }
         
-        self.delegate?.clickImage(carouselView: self, index: self.currIndex)
+        if let dele = self.delegate {
+            
+            dele.clickImage(carouselView: self, index: self.currIndex)
+        }
     }
     
 //MARK: 定时器

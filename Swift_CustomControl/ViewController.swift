@@ -41,11 +41,11 @@ class ViewController: UIViewController, YHCarouselViewDelegate {
         
         //设置分页控件的位置，默认为PositionBottomCenter
         carouselView.pagePosition = PageControlPosition.RightBottom;
-        //        //用block处理图片点击事件
-        //        carouselView.setClickBlock { (index) in
-        //
-        //            print("点击了第\(index)张图片")
-        //        }
+        //用block处理图片点击事件
+//        carouselView.callbackBlock = { (index) in
+//            
+//            print("点击了第\(index)张图片")
+//        }
         
         //用代理处理图片点击
         carouselView.delegate = self;

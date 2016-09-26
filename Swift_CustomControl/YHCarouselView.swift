@@ -48,84 +48,7 @@ typealias imageClickBlock = (_ index: NSInteger) -> Void
 
 class YHCarouselView: UIView, UIScrollViewDelegate {
     
-    //MARK: 私有属性
-    // 轮播图的图片数组
-    private var images = [UIImage]()
-    // 当前显示的imageView
-    private var currImageView: UIImageView? = {
-        let currImageView = UIImageView.init()
-        currImageView.clipsToBounds = true
-        return currImageView
-    }()
-    // 滚动显示的imageView
-    private var otherImageView: UIImageView? = {
-        let otherImageView = UIImageView.init()
-        otherImageView.clipsToBounds = true
-        return otherImageView
-    }()
-    // 图片描述控件, 默认在底部
-    private var describeLabel: UILabel? = {
-        
-        let describeLabel = UILabel.init()
-        describeLabel.backgroundColor = UIColor.init(white: 0, alpha: 0.5)
-        describeLabel.textColor = UIColor.white
-        describeLabel.textAlignment = NSTextAlignment.center
-        describeLabel.font = UIFont.systemFont(ofSize: 13)
-        describeLabel.isHidden = true
-        return describeLabel
-    }()
-    // 滚动视图
-    private var scrollView: UIScrollView? = {
-        
-        let scrollView = UIScrollView.init()
-        scrollView.isPagingEnabled = true
-        scrollView.scrollsToTop = false
-        scrollView.bounces = false
-        scrollView.showsVerticalScrollIndicator = false
-        scrollView.showsHorizontalScrollIndicator = false
-        return scrollView
-    }()
-    // 分页控件
-    private var pageControl: UIPageControl? = {
-        let pageControl = UIPageControl.init()
-        pageControl.isUserInteractionEnabled = false
-        return pageControl
-    }()
-    private var currIndex: NSInteger = 0 // 当前显示的图片的索引
-    private var nextIndex: NSInteger = 1 // 将要显示的图片的索引
-    private  var pageImageSize: CGSize? // pageControl图片的大小
-    private var timer: Timer? // 定时器
-    // 任务队列
-    private lazy var queue: OperationQueue = {
-        
-        return OperationQueue.init()
-    }()
-    
-    // 图片的点击闭包
-    private var callback: imageClickBlock?
-    
-    // 缓存图片的本地文件路劲
-    private var _cache: String?
-    private var cache: String? {
-        
-        set {
-            
-            _cache = newValue
-        }
-        get {
-        
-            let caches = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.cachesDirectory, FileManager.SearchPathDomainMask.userDomainMask, true)
-            _cache = caches.last
-            let isExists = FileManager.default.fileExists(atPath: _cache!)
-            
-            if !isExists {
-                
-                try! FileManager.default.createDirectory(atPath: _cache!, withIntermediateDirectories: true, attributes: nil)
-            }
-            return _cache
-        }
-    }
-
+//MARK: 属性的设置
     /**设置图片的切换模式, 默认为Default*/
     var changeMode : ImageChangeMode = ImageChangeMode.TakeTurnImage
     
@@ -138,7 +61,7 @@ class YHCarouselView: UIView, UIScrollViewDelegate {
             self.otherImageView?.contentMode = self.imageContentMode
         }
     }
-
+    
     
     
     /**设置pageControl的位置, 默认为CenterBottom*/
@@ -255,7 +178,7 @@ class YHCarouselView: UIView, UIScrollViewDelegate {
     var time: TimeInterval? {
         
         set {
-        
+            
             self._time = newValue
             self.startTimer()
         }
@@ -271,7 +194,87 @@ class YHCarouselView: UIView, UIScrollViewDelegate {
      */
     var autoCache: Bool = true
     
-    //MARK: 图片点击事件
+    
+//MARK: 私有属性
+    // 轮播图的图片数组
+    private var images = [UIImage]()
+    // 当前显示的imageView
+    private var currImageView: UIImageView? = {
+        let currImageView = UIImageView.init()
+        currImageView.clipsToBounds = true
+        return currImageView
+    }()
+    // 滚动显示的imageView
+    private var otherImageView: UIImageView? = {
+        let otherImageView = UIImageView.init()
+        otherImageView.clipsToBounds = true
+        return otherImageView
+    }()
+    // 图片描述控件, 默认在底部
+    private var describeLabel: UILabel? = {
+        
+        let describeLabel = UILabel.init()
+        describeLabel.backgroundColor = UIColor.init(white: 0, alpha: 0.5)
+        describeLabel.textColor = UIColor.white
+        describeLabel.textAlignment = NSTextAlignment.center
+        describeLabel.font = UIFont.systemFont(ofSize: 13)
+        describeLabel.isHidden = true
+        return describeLabel
+    }()
+    // 滚动视图
+    private var scrollView: UIScrollView? = {
+        
+        let scrollView = UIScrollView.init()
+        scrollView.isPagingEnabled = true
+        scrollView.scrollsToTop = false
+        scrollView.bounces = false
+        scrollView.showsVerticalScrollIndicator = false
+        scrollView.showsHorizontalScrollIndicator = false
+        return scrollView
+    }()
+    // 分页控件
+    private var pageControl: UIPageControl? = {
+        let pageControl = UIPageControl.init()
+        pageControl.isUserInteractionEnabled = false
+        return pageControl
+    }()
+    private var currIndex: NSInteger = 0 // 当前显示的图片的索引
+    private var nextIndex: NSInteger = 1 // 将要显示的图片的索引
+    private  var pageImageSize: CGSize? // pageControl图片的大小
+    private var timer: Timer? // 定时器
+    // 任务队列
+    private lazy var queue: OperationQueue = {
+        
+        return OperationQueue.init()
+    }()
+    
+    // 图片的点击闭包
+    private var callback: imageClickBlock?
+    
+    // 缓存图片的本地文件路劲
+    private var _cache: String?
+    private var cache: String? {
+        
+        set {
+            
+            _cache = newValue
+        }
+        get {
+        
+            let caches = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.cachesDirectory, FileManager.SearchPathDomainMask.userDomainMask, true)
+            _cache = caches.last
+            let isExists = FileManager.default.fileExists(atPath: _cache!)
+            
+            if !isExists {
+                
+                try! FileManager.default.createDirectory(atPath: _cache!, withIntermediateDirectories: true, attributes: nil)
+            }
+            return _cache
+        }
+    }
+
+    
+//MARK: 图片点击事件
     // 采用block的方式点击实现
     func setClickBlock(block: @escaping imageClickBlock){
         
@@ -288,7 +291,7 @@ class YHCarouselView: UIView, UIScrollViewDelegate {
         self.delegate?.clickImage(carouselView: self, index: self.currIndex)
     }
     
-    //MARK: 定时器
+//MARK: 定时器
     /**开启定时器, 默认开启, 调用后重新开启*/
     func startTimer() {
         
@@ -336,7 +339,7 @@ class YHCarouselView: UIView, UIScrollViewDelegate {
         self.timer = nil
     }
     
-    //MARK: 当前图片过半时就改变当前页码
+//MARK: 当前图片过半时就改变当前页码
     func changeCurrentPage(offset: CGFloat) -> Void {
         
         if offset < self.frame.size.width * 1.5 {
@@ -357,7 +360,7 @@ class YHCarouselView: UIView, UIScrollViewDelegate {
         }
     }
     
-    //MARK: UIScrollViewDelegate协议方法
+//MARK: UIScrollViewDelegate协议方法
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         
         if CGSize.zero.equalTo(scrollView.contentSize) {
@@ -404,7 +407,6 @@ class YHCarouselView: UIView, UIScrollViewDelegate {
         }
     }
     
-    
     func changeToNext() {
         
         if (self.changeMode == ImageChangeMode.Fade) {
@@ -443,7 +445,7 @@ class YHCarouselView: UIView, UIScrollViewDelegate {
         }
     }
     
-    //MARK: 页面布局
+//MARK: 页面布局
     /**
      *  设置分页控件指示器的图片
      *  两个图片必须同时设置，否则设置无效
@@ -620,7 +622,7 @@ class YHCarouselView: UIView, UIScrollViewDelegate {
         self.currImageView?.image = image
     }
     
-    //MARK: 下载图片，如果是gif则计算动画时长
+//MARK: 下载图片，如果是gif则计算动画时长
     func getImageWithData(data: NSData) -> UIImage {
         
         let imageSource: CGImageSource = CGImageSourceCreateWithData(data, nil)!
@@ -646,7 +648,7 @@ class YHCarouselView: UIView, UIScrollViewDelegate {
         }
     }
     
-    //MARK: 获取每一帧图片的时长
+//MARK: 获取每一帧图片的时长
     func durationWithSourceAtIndex(source: CGImageSource, index: NSInteger) -> Float {
         
         var duration: Float = 0.1

@@ -150,7 +150,7 @@
 				D4F3D94C1D921E92002D1E49 /* YHCarouselView.swift */,
 				D489FFCA1D935E2400BD4136 /* XRPlaceholder.png */,
 			);
-			name = YHCarouselView;
+			path = YHCarouselView;
 			sourceTree = "<group>";
 		};
 		D4F89A421D950BFC005E0C47 /* images */ = {
